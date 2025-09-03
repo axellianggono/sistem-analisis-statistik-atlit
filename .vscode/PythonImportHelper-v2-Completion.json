@@ -1,0 +1,156 @@
+[
+    {
+        "label": "csv",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "csv",
+        "description": "csv",
+        "detail": "csv",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "asdict",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "website",
+        "description": "website",
+        "isExtraImport": true,
+        "detail": "website",
+        "documentation": {}
+    },
+    {
+        "label": "Player",
+        "kind": 6,
+        "importPath": "website.players",
+        "description": "website.players",
+        "peekOfCode": "class Player:\n    Name: str\n    Team: str\n    Season: int\n    Photo: str\n    Physical: int\n    Speed: int\n    Vision: int\n    Attacking: int\n    Technical: int",
+        "detail": "website.players",
+        "documentation": {}
+    },
+    {
+        "label": "PlayerRepository",
+        "kind": 6,
+        "importPath": "website.players",
+        "description": "website.players",
+        "peekOfCode": "class PlayerRepository:\n    @staticmethod\n    def load_all() -> List[Player]:\n        players = []\n        with open(CSV_FILE, newline=\"\", encoding=\"utf-8-sig\") as f:\n            reader = csv.DictReader(f)\n            for row in reader:\n                players.append(Player(\n                    Name=row[\"Name\"],\n                    Team=row[\"Team\"],",
+        "detail": "website.players",
+        "documentation": {}
+    },
+    {
+        "label": "CSV_FILE",
+        "kind": 5,
+        "importPath": "website.players",
+        "description": "website.players",
+        "peekOfCode": "CSV_FILE = \"./database/players.csv\"\n@dataclass\nclass Player:\n    Name: str\n    Team: str\n    Season: int\n    Photo: str\n    Physical: int\n    Speed: int\n    Vision: int",
+        "detail": "website.players",
+        "documentation": {}
+    },
+    {
+        "label": "home",
+        "kind": 2,
+        "importPath": "website.urls",
+        "description": "website.urls",
+        "peekOfCode": "def home():\n    return render_template(\"index.html\")\n@urls.route('/players', methods=['GET'])\ndef fetch():\n    return render_template(\"players.html\", players=PlayerRepository.load_all())\n@urls.route('/player/<string:name>', methods=['GET'])\ndef get(name):\n    return render_template(\"player.html\", player=PlayerRepository.find_by_name(name))\n@urls.route('/compare', methods=['GET'])\ndef compre():",
+        "detail": "website.urls",
+        "documentation": {}
+    },
+    {
+        "label": "fetch",
+        "kind": 2,
+        "importPath": "website.urls",
+        "description": "website.urls",
+        "peekOfCode": "def fetch():\n    return render_template(\"players.html\", players=PlayerRepository.load_all())\n@urls.route('/player/<string:name>', methods=['GET'])\ndef get(name):\n    return render_template(\"player.html\", player=PlayerRepository.find_by_name(name))\n@urls.route('/compare', methods=['GET'])\ndef compre():\n    player1 = request.args.get('player1')\n    player2 = request.args.get('player2')\n    return render_template(\"compare.html\", player1=PlayerRepository.find_by_name(player1), player2=PlayerRepository.find_by_name(player2))",
+        "detail": "website.urls",
+        "documentation": {}
+    },
+    {
+        "label": "get",
+        "kind": 2,
+        "importPath": "website.urls",
+        "description": "website.urls",
+        "peekOfCode": "def get(name):\n    return render_template(\"player.html\", player=PlayerRepository.find_by_name(name))\n@urls.route('/compare', methods=['GET'])\ndef compre():\n    player1 = request.args.get('player1')\n    player2 = request.args.get('player2')\n    return render_template(\"compare.html\", player1=PlayerRepository.find_by_name(player1), player2=PlayerRepository.find_by_name(player2))",
+        "detail": "website.urls",
+        "documentation": {}
+    },
+    {
+        "label": "compre",
+        "kind": 2,
+        "importPath": "website.urls",
+        "description": "website.urls",
+        "peekOfCode": "def compre():\n    player1 = request.args.get('player1')\n    player2 = request.args.get('player2')\n    return render_template(\"compare.html\", player1=PlayerRepository.find_by_name(player1), player2=PlayerRepository.find_by_name(player2))",
+        "detail": "website.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urls",
+        "kind": 5,
+        "importPath": "website.urls",
+        "description": "website.urls",
+        "peekOfCode": "urls = Blueprint('urls', __name__)\n@urls.route('/', methods=['GET'])\ndef home():\n    return render_template(\"index.html\")\n@urls.route('/players', methods=['GET'])\ndef fetch():\n    return render_template(\"players.html\", players=PlayerRepository.load_all())\n@urls.route('/player/<string:name>', methods=['GET'])\ndef get(name):\n    return render_template(\"player.html\", player=PlayerRepository.find_by_name(name))",
+        "detail": "website.urls",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "app = create_app()\nif __name__ == \"__main__\":\n    app.run(debug=True, host=\"localhost\", port=8000)",
+        "detail": "main",
+        "documentation": {}
+    }
+]
