@@ -8,6 +8,30 @@
 </head>
 <body>
     <h1>Welcome to the Home Page</h1>
+    <a href="/players">All Player</a>
+    <a href="/compare">Compare Player</a>
+
+    <div style="margin-top: 10px;">
+      <input type="text" id="search">
+      <button id="search-button">Search</button>
+    </div>
+
+
+    <script>
+      const searchInput = document.getElementById('search');
+      const searchButton = document.getElementById('search-button');
+
+      searchButton.addEventListener('click', () => {
+        const query = searchInput.value;
+        if (query) {
+          window.location.href = `/player/${query}`;
+        } else {
+          window.location.href = '/players';
+        }
+      });
+
+    </script>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

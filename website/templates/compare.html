@@ -6,7 +6,42 @@
     <title>Compare</title>
 </head>
 <body>
-    <p>{{ player1 }}</p>
-    <p>{{ player2 }}</p>
+
+    <a href="/">home</a>
+    
+    <div id="compare">
+        <input type="text" id="player1" placeholder="Player 1">
+        <input type="text" id="player2" placeholder="Player 2">
+        <button id="compare-button">Compare</button>
+    </div>
+
+    {% if player1 and player2 %}
+    <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <div style="border: 1px solid; padding: 10px;">
+            <img src="{{ player1.Image }}" alt="Player 1 Image" style="width:150px;height:150px;">
+            <p>{{ player1.Name }}</p>
+            <p>{{ player1.Team }}</p>
+        </div>
+        <div style="border: 1px solid; padding: 10px;">
+            <img src="{{ player2.Image }}" alt="Player 2 Image" style="width:150px;height:150px;">
+            <p>{{ player2.Name }}</p>
+            <p>{{ player2.Team }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        const compareButton = document.getElementById('compare-button');
+        compareButton.addEventListener('click', () => {
+            const player1 = document.getElementById('player1').value;
+            const player2 = document.getElementById('player2').value;
+            if (player1 && player2) {
+                window.location.href = `/compare?player1=${player1}&player2=${player2}`;
+            } else {
+                alert('Please enter both player names.');
+            }
+        });
+    </script>
+
 </body>
 </html>

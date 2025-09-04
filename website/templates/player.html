@@ -6,6 +6,16 @@
     <title>{{ player.Name }}</title>
 </head>
 <body>
-    <p>{{ player.Team }}</p>
+    <a href="/">Home</a>
+
+    {% if player %}
+    <div style="border: 1; border-style: solid; margin: 10px; padding: 10px;">
+        <img src="{{ player.Image }}" alt="profil image" style="width:200px;height:200px;">
+        <p>{{ player.Name }}</p>
+        <p>{{ player.Team }}</p>
+    </div>
+    {% else %}
+    <p>No player data available.</p>
+    {% endif %}
 </body>
 </html>

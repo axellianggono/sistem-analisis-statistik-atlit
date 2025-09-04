@@ -17,8 +17,14 @@ def get(name):
     return render_template("player.html", player=PlayerRepository.find_by_name(name))
 
 @urls.route('/compare', methods=['GET'])
-def compre():
+def compare():
     player1 = request.args.get('player1')
     player2 = request.args.get('player2')
 
-    return render_template("compare.html", player1=PlayerRepository.find_by_name(player1), player2=PlayerRepository.find_by_name(player2))
+    if not player1 or not player2:
+        return render_template("compare.html", player1=None, player2=None)
+    
+    p1 = PlayerRepository.find_by_name(player1)
+    p2 = PlayerRepository.find_by_name(player2)
+
+    return render_template("compare.html", player1=p1, player2=p2)
