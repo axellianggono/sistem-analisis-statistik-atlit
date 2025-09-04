@@ -1,21 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ player.Name }}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ player.Name }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background: #333;
+      padding: 10px 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Player container */
+    .player-container {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    .player-card {
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 15px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .player-card img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+    }
+
+    .player-info h2 {
+      margin: 10px 0;
+    }
+    .player-info p {
+      margin: 5px 0;
+    }
+
+    /* Table */
+    table {
+      border-collapse: collapse;
+      margin-top: 10px;
+      width: 250px;
+      font-size: 14px;
+    }
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: center;
+    }
+    table th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+    table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    table tr:hover {
+      background-color: #f0f8ff;
+    }
+  </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <div class="navbar">
     <a href="/">Home</a>
+    <a href="/players">All Players</a>
+    <a href="/compare">Compare</a>
+  </div>
 
+  <div class="player-container">
+
+    <div style="margin: 10px; display: flex; justify-content: start; width: 80%;">
+        <a href="/players" style="text-decoration: none; color: #333333;">&larr; Back to Players</a>
+    </div>
+    
     {% if player %}
-    <div style="border: 1; border-style: solid; margin: 10px; padding: 10px;">
-        <img src="{{ player.Image }}" alt="profil image" style="width:200px;height:200px;">
-        <p>{{ player.Name }}</p>
-        <p>{{ player.Team }}</p>
+    <div class="player-card">
+      <!-- Player Info -->
+      <div class="player-info" style="text-align: center;">
+        <img src="{{ player.Photo }}" alt="profil image">
+        <h2>{{ player.Name }}</h2>
+        <p style="font-weight: bold;">{{ player.Team }}</p>
+        <p>⚽ Goals: {{ player.Goals }}</p>
+        <p>👟 Assists: {{ player.Assists }}</p>
+        <p>🎮 Matches: {{ player.Matches }}</p>
+        <p>⏱️ Minutes: {{ player.Minutes }}</p>
+      </div>
+
+      <!-- Radar Chart -->
+      <div style="width: 300px; height: 300px;">
+        <canvas id="chart" width="300" height="300"></canvas>
+      </div>
+      
+      <!-- Attribute Table -->
+      <div>
+        <table>
+          <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+          </tr>
+          <tr><td>Speed</td><td>{{ player.Speed }}</td></tr>
+          <tr><td>Vision</td><td>{{ player.Vision }}</td></tr>
+          <tr><td>Attacking</td><td>{{ player.Attacking }}</td></tr>
+          <tr><td>Technical</td><td>{{ player.Technical }}</td></tr>
+          <tr><td>Aerial</td><td>{{ player.Aerial }}</td></tr>
+          <tr><td>Defending</td><td>{{ player.Defending }}</td></tr>
+          <tr><td>Mental</td><td>{{ player.Mental }}</td></tr>
+        </table>
+      </div>
+
+      <div style="width: 100%; text-align: center; margin-top: 10px;">
+        <a href="/compare?player1={{ player.Name }}" style="text-decoration: none; color: white; background: #e55e10; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">Compare Player</a>
+      </div>
+
+        <div style="width: 100%; text-align: center; margin-top: 10px;">
+            {% if prev %}
+            <a href="/player/{{ prev.Name }}" style="text-decoration: none; color: white; background: #3498db; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">&larr; {{ prev.Name }}</a>
+            {% endif %}
+            {% if next %}
+            <a href="/player/{{ next.Name }}" style="text-decoration: none; color: white; background: #27ae60; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">{{ next.Name }} &rarr;</a>
+            {% endif %}
+        </div>
     </div>
     {% else %}
     <p>No player data available.</p>
     {% endif %}
+  </div>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const playerData = {{ player | tojson }};
+
+    const data = {
+      labels: [
+        'Speed',
+        'Vision',
+        'Attacking',
+        'Technical',
+        'Aerial',
+        'Defending',
+        'Mental'
+      ],
+      datasets: [{
+        label: playerData.Name,
+        data: [
+          playerData.Speed,
+          playerData.Vision,
+          playerData.Attacking,
+          playerData.Technical,
+          playerData.Aerial,
+          playerData.Defending,
+          playerData.Mental
+        ],
+        fill: true,
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)"
+      }]
+    };
+
+    const config = {
+      type: 'radar',
+      data: data,
+      options: {
+        elements: {
+          line: { borderWidth: 2 }
+        },
+        scales: {
+          r: { beginAtZero: true, max: 100 }
+        }
+      }
+    };
+
+    const ctx = document.getElementById('chart').getContext('2d');
+    ctx.canvas.width = 300;
+    ctx.canvas.height = 300;
+    new Chart(ctx, config);
+  </script>
 </body>
 </html>

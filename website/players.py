@@ -68,9 +68,19 @@ class PlayerRepository:
     @staticmethod
     def find_by_name(name: str) -> Optional[Player]:
         players = PlayerRepository.load_all()
-        for p in players:
+        next_player = None
+        prev_player = None
+        
+        for i, p in enumerate(players):
             if p.Name.lower() == name.lower():
-                return p
+                next_player = players[i + 1] if i + 1 < len(players) else None
+                prev_player = players[i - 1] if i - 1 >= 0 else None
+                return {
+                    "player": p,
+                    "next": next_player,
+                    "prev": prev_player
+                }
+
         return None
 
     @staticmethod
@@ -97,3 +107,24 @@ class PlayerRepository:
             PlayerRepository.save_all(new_players)
             return True
         return False
+    
+    @staticmethod
+    def paginate(page: int, per_page: int) -> List[Player]:
+        players = PlayerRepository.load_all()
+        start = (page - 1) * per_page
+        end = start + per_page
+        next = True if end < len(players) else False
+        prev = True if start > 0 else False
+        next_page = page + 1 if next else None
+        prev_page = page - 1 if prev else None
+        return {
+            "players": players[start:end],
+            "next": next,
+            "prev": prev,
+            "page": page,
+            "per_page": per_page,
+            "next_page": next_page,
+            "prev_page": prev_page,
+            "total": len(players)
+        }
+        

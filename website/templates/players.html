@@ -4,37 +4,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Players</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f9f9f9;
+      }
+
+      /* Navbar */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #333;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-right: 15px;
+      }
+
+      .navbar a:hover {
+        text-decoration: underline;
+      }
+
+      /* Search bar */
+      .search-box {
+        margin: 20px;
+        text-align: center;
+      }
+      .search-box input {
+        padding: 8px;
+        width: 250px;
+      }
+      .search-box button {
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      /* Player cards */
+      .players-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        padding: 20px;
+      }
+
+      .player-card {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .player-card p {
+        margin: 5px 0;
+      }
+
+      .player-card a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 6px 12px;
+        background: #333;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .player-card a:hover {
+        background: #555;
+      }
+
+      .pagination {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    margin: 20px 0;
+    gap: 10px; /* space between buttons */
+  }
+
+  .page-btn {
+    padding: 8px 16px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .page-btn:hover {
+    background-color: #555;
+  }
+
+  /* Optional: disable button look for non-existing prev/next */
+  .page-btn.disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+    </style>
   </head>
   <body>
-    <a href="/">Home</a>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div>
+        <a href="/">Home</a>
+        <a href="/players">All Players</a>
+        <a href="/compare">Compare</a>
+      </div>
+    </div>
 
-    <div style="margin-top: 10px;">
-      <input type="text" id="search">
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search player by name..." />
       <button id="search-button">Search</button>
     </div>
 
-    {% for player in players %}
-    <div style="border: 1; border-style: solid; margin: 10px; padding: 10px;">
-      <p>{{ player.Name }}</p>
-      <p>{{ player.Team }}</p>
-      <a href="/player/{{ player.Name }}">See Detail</a>
+    <!-- Players list -->
+    <div class="players-container">
+      {% for player in datas.players %}
+      <div class="player-card">
+        <img src="{{ player.Photo }}" alt="{{ player.Name }}'s Photo" style="width:150px;height:150px;border-radius: 50%;border: 2px solid #ddd;" />
+        <p><strong>{{ player.Name }}</strong></p>
+        <p>{{ player.Team }}</p>
+        <p>⚽ Goals: {{ player.Goals }}</p>
+        <p>👟 Assists: {{ player.Assists }}</p>
+        <p>🎮 Matches: {{ player.Matches }}</p>
+        <p>⏱️ Minutes: {{ player.Minutes }}</p>
+
+        <a href="/player/{{ player.Name }}">See Detail</a>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+
+    <div class="pagination">
+      {% if datas.prev %}
+      <a href="/players?page={{ datas.prev_page }}" class="page-btn">← Previous</a>
+      {% endif %}
+
+      {% if datas.next %}
+      <a href="/players?page={{ datas.next_page }}" class="page-btn">Next →</a>
+      {% endif %}
+    </div>
 
     <script>
-      const searchInput = document.getElementById('search');
-      const searchButton = document.getElementById('search-button');
+      const searchInput = document.getElementById("search");
+      const searchButton = document.getElementById("search-button");
 
-      searchButton.addEventListener('click', () => {
-        const query = searchInput.value;
+      searchButton.addEventListener("click", () => {
+        const query = searchInput.value.trim();
         if (query) {
           window.location.href = `/player/${query}`;
         } else {
-          window.location.href = '/players';
+          window.location.href = "/players";
         }
       });
-
     </script>
-
   </body>
 </html>

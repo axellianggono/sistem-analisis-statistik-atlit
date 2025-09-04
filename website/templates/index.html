@@ -1,37 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Football Stats</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    nav a {
+      color: #fff;
+      margin-left: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .search-box {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .search-box input {
+      padding: 8px 12px;
+      font-size: 14px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-box button {
+      padding: 8px 16px;
+      background: #3498db;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .search-box button:hover {
+      background: #2980b9;
+    }
+    .links {
+      margin-top: 40px;
+    }
+    .links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 20px;
+      background: #27ae60;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+    .links a:hover {
+      background: #219150;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <a href="/players">All Player</a>
-    <a href="/compare">Compare Player</a>
 
-    <div style="margin-top: 10px;">
-      <input type="text" id="search">
+  <!-- Navbar -->
+  <header>
+    <h1>Football Stats ⚽</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/players">All Players</a>
+      <a href="/compare">Compare Players</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Welcome to Football Stats!</h2>
+    <p>Explore player profiles, compare stats, and visualize performance.</p>
+
+    <!-- Search -->
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search player by name...">
       <button id="search-button">Search</button>
     </div>
 
+    <!-- Quick Links -->
+    <div class="links">
+      <a href="/players">📋 View All Players</a>
+      <a href="/compare">⚔️ Compare Players</a>
+    </div>
+  </div>
 
-    <script>
-      const searchInput = document.getElementById('search');
-      const searchButton = document.getElementById('search-button');
+  <script>
+    const searchInput = document.getElementById('search');
+    const searchButton = document.getElementById('search-button');
 
-      searchButton.addEventListener('click', () => {
-        const query = searchInput.value;
-        if (query) {
-          window.location.href = `/player/${query}`;
-        } else {
-          window.location.href = '/players';
-        }
-      });
-
-    </script>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    searchButton.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query) {
+        window.location.href = `/player/${query}`;
+      } else {
+        window.location.href = '/players';
+      }
+    });
+  </script>
 </body>
 </html>

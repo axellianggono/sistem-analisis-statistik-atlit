@@ -1,47 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compare</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Players</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      background: #333;
+      padding: 10px 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Container */
+    .compare-container {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    /* Player Card */
+    .player-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .player-card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+    }
+    .player-card h3 {
+      margin: 10px 0 5px;
+    }
+    .player-card p {
+      margin: 3px 0;
+    }
+
+    /* Table */
+    table {
+      border-collapse: collapse;
+      margin-top: 10px;
+      width: 200px;
+      font-size: 14px;
+    }
+    table th, table td {
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      text-align: center;
+    }
+    table th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+    table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    /* Layout for compare section */
+    .compare-section {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Search input */
+    #compare input {
+      padding: 8px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #compare button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+    }
+    #compare button:hover {
+      background: #555;
+    }
+
+    .notification {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+    }
+    .warning {
+      color: orange;
+    }
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/players">All Players</a>
+    <a href="/compare">Compare</a>
+  </div>
 
-    <a href="/">home</a>
-    
+  <div class="compare-container">
+    <!-- Input Compare -->
     <div id="compare">
-        <input type="text" id="player1" placeholder="Player 1">
-        <input type="text" id="player2" placeholder="Player 2">
-        <button id="compare-button">Compare</button>
+      <input type="text" id="player1" placeholder="Player 1" value="{{ request.args.get('player1', '') }}">
+      <input type="text" id="player2" placeholder="Player 2" value="{{ request.args.get('player2', '') }}">
+      <button id="compare-button">Compare</button>
     </div>
 
     {% if player1 and player2 %}
-    <div style="display: flex; gap: 20px; margin-top: 20px;">
-        <div style="border: 1px solid; padding: 10px;">
-            <img src="{{ player1.Image }}" alt="Player 1 Image" style="width:150px;height:150px;">
+    <div class="compare-section">
+      <!-- Player 1 -->
+      <div class="player-card">
+        <img src="{{ player1.Photo }}" alt="Player 1 Image">
+        <h3>{{ player1.Name }}</h3>
+        <p><strong>{{ player1.Team }}</strong></p>
+        <table style="width: 100%;">
+          <tr><th>Attribute</th><th>Value</th></tr>
+          <tr><td>Speed</td><td>{{ player1.Speed }}</td></tr>
+          <tr><td>Vision</td><td>{{ player1.Vision }}</td></tr>
+          <tr><td>Attacking</td><td>{{ player1.Attacking }}</td></tr>
+          <tr><td>Technical</td><td>{{ player1.Technical }}</td></tr>
+          <tr><td>Aerial</td><td>{{ player1.Aerial }}</td></tr>
+          <tr><td>Defending</td><td>{{ player1.Defending }}</td></tr>
+          <tr><td>Mental</td><td>{{ player1.Mental }}</td></tr>
+        </table>
+
+        <p style="margin-top: 40px">Change Player</p>
+        <div style="width: 100%; text-align: center; margin-top: 10px;">
+        {% if prev1 %}
+            <a href="/compare?player1={{ prev1.Name }}&player2={{ request.args.get('player2', player2.Name) }}"
+            style="text-decoration: none; color: white; background: #3498db; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">
+            &larr; {{ prev1.Name }}
+            </a>
+        {% endif %}
+
+        {% if next1 %}
+            <a href="/compare?player1={{ next1.Name }}&player2={{ request.args.get('player2', player2.Name) }}"
+            style="text-decoration: none; color: white; background: #27ae60; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">
+            {{ next1.Name }} &rarr;
+            </a>
+        {% endif %}
+    </div>
+
+      </div>
+
+      <!-- Chart -->
+      <div style="width: 400px; height: 400px;">
+        <canvas id="compareChart"></canvas>
+      </div>
+
+      <!-- Player 2 -->
+      <div class="player-card">
+        <img src="{{ player2.Photo }}" alt="Player 2 Image">
+        <h3>{{ player2.Name }}</h3>
+        <p><strong>{{ player2.Team }}</strong></p>
+        <table style="width: 100%;">
+          <tr><th>Attribute</th><th>Value</th></tr>
+          <tr><td>Speed</td><td>{{ player2.Speed }}</td></tr>
+          <tr><td>Vision</td><td>{{ player2.Vision }}</td></tr>
+          <tr><td>Attacking</td><td>{{ player2.Attacking }}</td></tr>
+          <tr><td>Technical</td><td>{{ player2.Technical }}</td></tr>
+          <tr><td>Aerial</td><td>{{ player2.Aerial }}</td></tr>
+          <tr><td>Defending</td><td>{{ player2.Defending }}</td></tr>
+          <tr><td>Mental</td><td>{{ player2.Mental }}</td></tr>
+        </table>
+
+        <p style="margin-top: 40px">Change Player</p>
+        <div style="width: 100%; text-align: center; margin-top: 10px;">
+            {% if prev2 %}
+            <a href="/compare?player1={{ request.args.get('player1', player1.Name) }}&player2={{ prev2.Name }}"
+            style="text-decoration: none; color: white; background: #3498db; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">
+            &larr; {{ prev2.Name }}
+            </a>
+            {% endif %}
+
+            {% if next2 %}
+            <a href="/compare?player1={{ request.args.get('player1', player1.Name) }}&player2={{ next2.Name }}"
+            style="text-decoration: none; color: white; background: #27ae60; padding: 8px 16px; border-radius: 4px; margin-left: 10px;">
+            {{ next2.Name }} &rarr;
+            </a>
+            {% endif %}
+        </div>
+
+      </div>
+    </div>
+    {% elif player1 and not player2 %}
+      <p class="notification warning">Player 2 tidak ditemukan.</p>
+      <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <!-- Player 1 -->
+        <div class="player-card">
+          <img src="{{ player1.Photo }}" alt="Player 1">
             <p>{{ player1.Name }}</p>
             <p>{{ player1.Team }}</p>
+            <p>⚽ Goals: {{ player1.Goals }}</p>
+            <p>👟 Assists: {{ player1.Assists }}</p>
+            <p>🎮 Matches: {{ player1.Matches }}</p>
+            <p>⏱️ Minutes: {{ player1.Minutes }}</p>
         </div>
-        <div style="border: 1px solid; padding: 10px;">
-            <img src="{{ player2.Image }}" alt="Player 2 Image" style="width:150px;height:150px;">
+        <!-- Chart -->
+        <div style="width: 400px; height: 400px;">
+          <canvas id="compareChart"></canvas>
+        </div>
+      </div>
+
+    {% elif player2 and not player1 %}
+      <p class="notification warning">Player 1 tidak ditemukan.</p>
+      <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <!-- Player 2 -->
+        <div class="player-card">
+            <img src="{{ player2.Photo }}" alt="Player 2">
             <p>{{ player2.Name }}</p>
             <p>{{ player2.Team }}</p>
+            <p>⚽ Goals: {{ player2.Goals }}</p>
+            <p>👟 Assists: {{ player2.Assists }}</p>
+            <p>🎮 Matches: {{ player2.Matches }}</p>
+            <p>⏱️ Minutes: {{ player2.Minutes }}</p>
         </div>
-    </div>
+        <!-- Chart -->
+        <div style="width: 400px; height: 400px;">
+          <canvas id="compareChart"></canvas>
+        </div>
+      </div>
+
+    {% else %}
+      <p class="notification error">Tidak ada pemain. Silakan pilih pemain untuk dibandingkan!</p>
     {% endif %}
+  </div>
 
-    <script>
-        const compareButton = document.getElementById('compare-button');
-        compareButton.addEventListener('click', () => {
-            const player1 = document.getElementById('player1').value;
-            const player2 = document.getElementById('player2').value;
-            if (player1 && player2) {
-                window.location.href = `/compare?player1=${player1}&player2=${player2}`;
-            } else {
-                alert('Please enter both player names.');
-            }
-        });
-    </script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const compareButton = document.getElementById('compare-button');
+    compareButton.addEventListener('click', () => {
+      const player1 = document.getElementById('player1').value;
+      const player2 = document.getElementById('player2').value;
+      if (player1 && player2) {
+        window.location.href = `/compare?player1=${player1}&player2=${player2}`;
+      } else {
+        alert('Please enter both player names.');
+      }
+    });
 
+    {% if player1 and player2 %}
+    const player1Data = {{ player1 | tojson }};
+    const player2Data = {{ player2 | tojson }};
+
+    const data = {
+      labels: [
+        'Speed','Vision','Attacking','Technical','Aerial','Defending','Mental'
+      ],
+      datasets: [
+        {
+          label: player1Data.Name,
+          data: [
+            player1Data.Speed,
+            player1Data.Vision,
+            player1Data.Attacking,
+            player1Data.Technical,
+            player1Data.Aerial,
+            player1Data.Defending,
+            player1Data.Mental
+          ],
+          fill: true,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgb(255, 99, 132)',
+          pointBackgroundColor: 'rgb(255, 99, 132)',
+          pointBorderColor: '#fff'
+        },
+        {
+          label: player2Data.Name,
+          data: [
+            player2Data.Speed,
+            player2Data.Vision,
+            player2Data.Attacking,
+            player2Data.Technical,
+            player2Data.Aerial,
+            player2Data.Defending,
+            player2Data.Mental
+          ],
+          fill: true,
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgb(54, 162, 235)',
+          pointBackgroundColor: 'rgb(54, 162, 235)',
+          pointBorderColor: '#fff'
+        }
+      ]
+    };
+
+    const config = {
+      type: 'radar',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          r: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: { stepSize: 20 }
+          }
+        }
+      }
+    };
+
+    const ctx = document.getElementById('compareChart').getContext('2d');
+    new Chart(ctx, config);
+    {% endif %}
+  </script>
 </body>
 </html>
