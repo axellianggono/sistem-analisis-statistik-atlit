@@ -351,6 +351,9 @@ body {
 
 .player-detail {
   margin-top: 2rem;
+  max-width: 1200px;   /* batas lebar konten */
+  margin: 0 auto;      /* biar rata tengah */
+  padding: 0 1rem;
 }
 
 .back-btn {
