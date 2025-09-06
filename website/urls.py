@@ -1,7 +1,6 @@
 from flask import Blueprint, request, render_template
 from .players import PlayerRepository
 
-
 urls = Blueprint('urls', __name__)
 
 @urls.route('/', methods=['GET'])

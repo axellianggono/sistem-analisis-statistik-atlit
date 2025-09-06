@@ -3,38 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <title>Players</title>
   </head>
   <body>
-    <a href="/">Home</a>
+    <!--Navigation-->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <img src="../static/images/Logo.png" alt="Logo" />
+          <span>Fajar Febriansyah Group</span>
+        </div>
+        <ul class="nav-menu">
+          <li>
+            <a href="/" class="nav-link" data-section="home">Home</a>
+          </li>
+          <li>
+            <a href="/players" class="nav-link active" data-section="performance"
+              >Performance Player</a
+            >
+          </li>
+          <li>
+            <a href="/compare" class="nav-link" data-section="compare"
+              >Compare Player</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!--End Navigation-->
 
-    <div style="margin-top: 10px;">
-      <input type="text" id="search">
-      <button id="search-button">Search</button>
-    </div>
+    <!-- Performance Player Section -->
+    <main class="main-content">
+    <section id="performance" class="performance-section">
+      <h2 class="section-title">Performance Player</h2>
 
-    {% for player in players %}
-    <div style="border: 1; border-style: solid; margin: 10px; padding: 10px;">
-      <p>{{ player.Name }}</p>
-      <p>{{ player.Team }}</p>
-      <a href="/player/{{ player.Name }}">See Detail</a>
-    </div>
-    {% endfor %}
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search players..." id="playerSearch" />
+        <button class="search-btn" id="searchBtn">🔍</button>
+      </div>
 
-    <script>
-      const searchInput = document.getElementById('search');
-      const searchButton = document.getElementById('search-button');
-
-      searchButton.addEventListener('click', () => {
-        const query = searchInput.value;
-        if (query) {
-          window.location.href = `/player/${query}`;
-        } else {
-          window.location.href = '/players';
-        }
-      });
-
-    </script>
-
-  </body>
+      <div class="player-grid" id="playerGrid">
+        {% for player in players %}
+        <!-- data-href = URL detail, seluruh card bisa di-klik -->
+        <div class="player-card"
+             data-name="{{ player.Name|lower }}"
+             data-team="{{ player.Team|lower }}"
+             data-href="{{ url_for('urls.get', name=player.Name) }}">
+          <img src="{{ player.Photo }}" alt="{{ player.Name }}" class="player-image" />
+          <div class="player-info">
+            <h3>{{ player.Name }}</h3>
+            <p><strong>Club:</strong> {{ player.Team }}</p>
+            <p><strong>Season:</strong> {{ player.Season }}</p>
+          </div>
+          <div class="player-stats">
+            <div class="stat-item">Goals: {{ player.Goals }}</div>
+            <div class="stat-item">Assists: {{ player.Assists }}</div>
+            <div class="stat-item">Matches: {{ player.Matches }}</div>
+            <div class="stat-item">Minutes: {{ player.Minutes }}</div>
+          </div>
+          <!-- rating bintang statis 5x; nanti kalau mau dinamis tinggal ganti -->
+          <div class="rating">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
 </html>

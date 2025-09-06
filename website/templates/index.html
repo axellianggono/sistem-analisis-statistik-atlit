@@ -3,34 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <title>Home</title>
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <a href="/players">All Player</a>
-    <a href="/compare">Compare Player</a>
+  <!--Navigation-->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <img src="../static/images/Logo.png" alt="Logo" />
+          <span>Fajar Febriansyah Group</span>
+        </div>
+        <ul class="nav-menu">
+          <li>
+            <a href="/" class="nav-link active" data-section="home">Home</a>
+          </li>
+          <li>
+            <a href="/players" class="nav-link" data-section="performance"
+              >Performance Player</a
+            >
+          </li>
+          <li>
+            <a href="/compare" class="nav-link" data-section="compare"
+              >Compare Player</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!--End Navigation-->      
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Section -->
+      <section id="home" class="home-section">
+        <div class="slideshow">
+          <img
+            src=" https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=1500&q=80"
+            class="active"
+          />
+          <!-- <img
+            src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1500&q=80"
+          /> -->
+          <img src="Images/Lapangan.jpg" />
+          <!-- <img
+            src="https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?auto=format&fit=crop&w=1500&q=80"
+          /> -->
+          <!-- <img
+            src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1500&q=80"
+          /> -->
+        </div>
+        <div class="overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Football Performance Dashboard</h1>
+          <p class="hero-subtitle">
+            Advanced analytics and insights for youth football players. Track
+            performance, analyze skills, and unlock potential with cutting-edge
+            data visualization and comprehensive player comparison tools.
+          </p>
+          <div class="hero-buttons">
+            <a
+              href="https://drive.google.com/your-doc-link"
+              class="hero-btn"
+              target="_blank"
+              >Documentation</a
+            >
+            <a
+              href="https://drive.google.com/your-schedule-link"
+              class="hero-btn secondary"
+              target="_blank"
+              >Match Schedule</a
+            >
+            <a
+              href="https://drive.google.com/your-test-link"
+              class="hero-btn tertiary"
+              target="_blank"
+              >Test Results</a
+            >
+          </div>
+        </div>
 
-    <div style="margin-top: 10px;">
-      <input type="text" id="search">
-      <button id="search-button">Search</button>
-    </div>
+        <!-- Footer -->
+        <footer class="home-footer">
+          <div class="footer-container">
+            <div class="footer-left">
+              <div class="footer-logo">
+                <div class="logo">
+                  <img src="../static/images/Logo.png" alt="Logo" />
+                  <span>Fajar Febriansyah Group</span>
+                </div>
+              </div>
+              <p class="footer-description">
+                Advanced football performance analytics for youth players.<br />
+                Unlock potential with data-driven insights and comprehensive<br />
+                tracking.
+              </p>
+              <p class="footer-copyright">
+                © 2025 FootballAnalytics. All rights reserved. | Youth Football
+                Fest 2025
+              </p>
+            </div>
 
-
-    <script>
-      const searchInput = document.getElementById('search');
-      const searchButton = document.getElementById('search-button');
-
-      searchButton.addEventListener('click', () => {
-        const query = searchInput.value;
-        if (query) {
-          window.location.href = `/player/${query}`;
-        } else {
-          window.location.href = '/players';
-        }
-      });
-
-    </script>
+            <div class="footer-right">
+              <h4 class="footer-title">Follow Us</h4>
+              <div class="social-links">
+                <a
+                  href="https://wa.me/6281247662275"
+                  class="social-link whatsapp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 32 32"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16.002 3C9.374 3 4 8.373 4 15c0 2.645.87 5.09 2.343 7.084L4 29l7.127-2.32A11.92 11.92 0 0016.002 27C22.628 27 28 21.627 28 15S22.628 3 16.002 3zm-.003 21a9.77 9.77 0 01-4.985-1.36l-.357-.213-4.236 1.376 1.385-4.125-.232-.367A9.74 9.74 0 016.23 15c0-5.382 4.387-9.77 9.77-9.77 5.382 0 9.77 4.388 9.77 9.77 0 5.382-4.388 9.77-9.77 9.77zm5.37-7.332c-.293-.147-1.735-.857-2.005-.953-.27-.099-.466-.147-.662.147-.197.293-.758.953-.93 1.149-.173.195-.344.22-.637.073-.293-.146-1.238-.456-2.36-1.453-.872-.778-1.46-1.74-1.634-2.033-.173-.293-.018-.451.13-.598.134-.133.293-.346.44-.52.146-.173.195-.293.293-.488.098-.195.049-.367-.024-.514-.073-.146-.662-1.597-.906-2.187-.239-.573-.48-.494-.662-.503l-.567-.01c-.195 0-.514.073-.783.367-.27.293-1.03 1.003-1.03 2.447 0 1.444 1.055 2.84 1.202 3.035.146.195 2.077 3.174 5.037 4.453.704.303 1.252.484 1.68.619.706.225 1.35.193 1.857.117.567-.085 1.735-.71 1.98-1.393.244-.684.244-1.27.171-1.393-.073-.122-.268-.195-.56-.341z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.instagram.com/vergiethie/"
+                  class="social-link instagram"
+                  target="_blank"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

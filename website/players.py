@@ -2,26 +2,70 @@ import csv
 from dataclasses import dataclass, asdict
 from typing import List, Optional
 
-CSV_FILE = "./database/players.csv"
+CSV_FILE = "./database/players_preserved_exact.csv"
 
 @dataclass
 class Player:
+    # Basic Info
     Name: str
     Team: str
-    Season: int
+    Season: str
+    Position: str
+    Age: int
+    Height: float
+    Weight: float
     Photo: str
-    Physical: int
-    Speed: int
-    Vision: int
-    Attacking: int
-    Technical: int
-    Aerial: int
-    Defending: int
-    Mental: int
-    Goals: int
-    Assists: int
-    Matches: int
-    Minutes: int
+
+    # Physical
+    Acceleration: Optional[float] = None
+    Agility: Optional[float] = None
+    Balance: Optional[float] = None
+    JumpingReach: Optional[float] = None
+    NaturalFitness: Optional[float] = None
+    Pace: Optional[float] = None
+    Stamina: Optional[float] = None
+    Strength: Optional[float] = None
+    GoalkeeperAbility: Optional[float] = None
+    Condition: Optional[float] = None
+    PreferredFoot: Optional[str] = None
+
+    # Technical
+    Dribbling: Optional[float] = None
+    Passing: Optional[float] = None
+    Corners: Optional[float] = None
+    Crossing: Optional[float] = None
+    FirstTouch: Optional[float] = None
+    Finishing: Optional[float] = None
+    Penalty: Optional[float] = None
+    FreeKick: Optional[float] = None
+    LongShots: Optional[float] = None
+    LongThrows: Optional[float] = None
+    Heading: Optional[float] = None
+    Marking: Optional[float] = None
+    Tackling: Optional[float] = None
+    Technique: Optional[float] = None
+
+    # Mental
+    Aggression: Optional[float] = None
+    Anticipation: Optional[float] = None
+    Bravery: Optional[float] = None
+    Composure: Optional[float] = None
+    Concentration: Optional[float] = None
+    Decisions: Optional[float] = None
+    Determination: Optional[float] = None
+    Flair: Optional[float] = None
+    Leadership: Optional[float] = None
+    OffTheBall: Optional[float] = None
+    Positioning: Optional[float] = None
+    Teamwork: Optional[float] = None
+    Vision: Optional[float] = None
+    WorkRate: Optional[float] = None
+
+    # Match Stats
+    Goals: Optional[int] = None
+    Assists: Optional[int] = None
+    Matches: Optional[int] = None
+    Minutes: Optional[int] = None
 
 
 class PlayerRepository:
@@ -32,22 +76,66 @@ class PlayerRepository:
             reader = csv.DictReader(f)
             for row in reader:
                 players.append(Player(
+                    # Basic Info
                     Name=row["Name"],
                     Team=row["Team"],
-                    Season=int(row["Season"]),
+                    Season=row["Season"],
+                    Position=row["Position"],
+                    Age=row["Age"],
+                    Height=row["Height"],
+                    Weight=row["Weight"],
                     Photo=row["Photo"],
-                    Physical=int(row["Physical"]),
-                    Speed=int(row["Speed"]),
-                    Vision=int(row["Vision"]),
-                    Attacking=int(row["Attacking"]),
-                    Technical=int(row["Technical"]),
-                    Aerial=int(row["Aerial"]),
-                    Defending=int(row["Defending"]),
-                    Mental=int(row["Mental"]),
-                    Goals=int(row["Goals"]),
-                    Assists=int(row["Assists"]),
-                    Matches=int(row["Matches"]),
-                    Minutes=int(row["Minutes"]),
+
+                    # Physical
+                    Acceleration=row["Acceleration"],
+                    Agility=row["Agility"],
+                    Balance=row["Balance"],
+                    JumpingReach=row["JumpingReach"],
+                    NaturalFitness=row["NaturalFitness"],
+                    Pace=row["Pace"],
+                    Stamina=row["Stamina"],
+                    Strength=row["Strength"],
+                    GoalkeeperAbility=row["GoalkeeperAbility"],
+                    Condition=row["Condition"],
+                    PreferredFoot=row["PreferredFoot"],
+
+                    # Technical
+                    Dribbling=row["Dribbling"],
+                    Passing=row["Passing"],
+                    Corners=row["Corners"],
+                    Crossing=row["Crossing"],
+                    FirstTouch=row["FirstTouch"],
+                    Finishing=row["Finishing"],
+                    Penalty=row["Penalty"],
+                    FreeKick=row["FreeKick"],
+                    LongShots=row["LongShots"],
+                    LongThrows=row["LongThrows"],
+                    Heading=row["Heading"],
+                    Marking=row["Marking"],
+                    Tackling=row["Tackling"],
+                    Technique=row["Technique"],
+
+                    # Mental
+                    Aggression=row["Aggression"],
+                    Anticipation=row["Anticipation"],
+                    Bravery=row["Bravery"],
+                    Composure=row["Composure"],
+                    Concentration=row["Concentration"],
+                    Decisions=row["Decisions"],
+                    Determination=row["Determination"],
+                    Flair=row["Flair"],
+                    Leadership=row["Leadership"],
+                    OffTheBall=row["OffTheBall"],
+                    Positioning=row["Positioning"],
+                    Teamwork=row["Teamwork"],
+                    Vision=row["Vision"],
+                    WorkRate=row["WorkRate"],
+
+                    # Match Stats
+                    Goals=row["Goals"],
+                    Assists=row["Assists"],
+                    Matches=row["Matches"],
+                    Minutes=row["Minutes"],
                 ))
         return players
 
